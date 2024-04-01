@@ -1,9 +1,7 @@
-import 'test1.dart' as Test1;
+import 'test1.dart' hide sayHello1, User1;
 
 main(){
   no1 = 30;
-  Test1.no1 = 30;
-
-  Test1.sayHello();
-  Test1.User1 user1 = Test1.User1();
+  sayHello();
+  User1 user1 = User1();
 }
