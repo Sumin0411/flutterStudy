@@ -1,11 +1,9 @@
-int no = 10;
-void sayHello(){
-  print('hello, $no');
-}
+import 'test1.dart' as Test1;
 
-class User{
-  int no = 10;
-  void sayHello(){
-    print('world, $no');
-  }
+main(){
+  no1 = 30;
+  Test1.no1 = 30;
+
+  Test1.sayHello();
+  Test1.User1 user1 = Test1.User1();
 }
