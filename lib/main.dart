@@ -3,109 +3,69 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(MyApp());
 }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Stateful Test'),
-        ),
-        body: MyWidget(),
-      ),
+        debugShowCheckedModeBanner: false,
+        home: MyListWidget()
     );
   }
 }
-class MyWidget extends StatefulWidget{
+
+class MyListWidget extends StatefulWidget{
   @override
   State<StatefulWidget> createState(){
-    return _MyWidgetState();
+    return _MyListWidgetState();
   }
 }
 
-class _MyWidgetState extends State<MyWidget>{
-  bool enabled = false;
-  String stateText = "disable";
-
-  void changeCheck(){
+class _MyListWidgetState extends State<MyListWidget>{
+  List<Widget> widgetList = [
+    MyColorItemWidget(Colors.red, key: UniqueKey(),),
+    MyColorItemWidget(Colors.blue, key: UniqueKey()),
+  ];
+  onChange(){
+    print(widgetList.elementAt(0).key);
     setState(() {
-      if (enabled){
-        stateText = "disable";
-        enabled = false;
-      }else{
-        stateText = "enable";
-        enabled = true;
-      }
+      widgetList.insert(1, widgetList.removeAt(0));
     });
   }
-
   @override
-    Widget build(BuildContext context){
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(title: Text('Key Test'),),
+      body: Column(
         children: [
-          IconButton(
-            icon: (enabled
-                ? const Icon(
-              Icons.check_box,
-              size: 20,
-          )
-        :  const Icon(Icons.check_box_outline_blank, size: 20,)),
-          color: Colors.red,
-          onPressed: changeCheck,
-          ),
-          Container(
-            padding: const EdgeInsets.only(left:16),
-            child: Text(
-              '$stateText',
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          )
+          Row(children: widgetList,),
+          ElevatedButton(onPressed: onChange, child: Text("toggle"))
         ],
       ),
     );
   }
+}
+
+class MyColorItemWidget extends StatefulWidget{
+  Color color;
+  MyColorItemWidget(this.color, {Key? key}):super (key:key);
+  @override
+  State<StatefulWidget> createState(){
+    return _MyColorItemWidgetState(color);
   }
-// class MyApp extends StatelessWidget {
-//   bool enabled = false;
-//   String stateText = "disable";
-//   void chageCheck(){
-//     if (enabled) {
-//       stateText = "disable";
-//       enabled = false;
-//     } else {
-//       stateText = "enable";
-//       enabled = true;
-//     }
-//   }
-//   @override
-//   Widget build(BuildContext context){
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: const Text('Stateless Test'),
-//         ),
-//         body: Center(
-//             child:Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 IconButton(
-//                   icon: (enabled ?  const Icon(Icons.check_box, size : 20,):
-//                         const Icon(Icons.check_box_outline_blank, size: 20,)),
-//                   color: Colors.red,
-//                   onPressed: chageCheck,
-//                 ),
-//                 Container(
-//                   padding: const EdgeInsets.only(left:16),
-//                   child: Text('$stateText', style: const TextStyle(fontSize: 32,
-//                   fontWeight: FontWeight.bold),),
-//                 ),
-//               ],
-//             ),)
-//       ),
-//     );
-//   }
-// }
+}
+
+class _MyColorItemWidgetState extends State<MyColorItemWidget>{
+  Color color;
+  _MyColorItemWidgetState(this.color);
+  @override
+  Widget build(BuildContext context){
+    return Expanded(
+      child: Container(
+        color : color,
+        width: 150,
+        height: 150,
+      )
+    );
+  }
+}
